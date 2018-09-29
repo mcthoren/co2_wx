@@ -88,7 +88,7 @@ if __name__ == "__main__":
 		time1 = time.time()
 		if((time1 - time0) > 60):
 			ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
-			dat_string = "%s\tT: %2.2f\tCO2: %4i\n" % (ts, t_val / t_count, co2_val / co2_count)
+			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, t_val / t_count, co2_val / co2_count)
 			write_out_dat_stamp(ts, 'co2.dat', dat_string)
 			co2_val = 0
 			co2_count = 0
