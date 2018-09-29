@@ -4,6 +4,21 @@
 
 import sys, fcntl, time, datetime
 
+wx_dir = "/home/ghz/co2_wx"
+
+def write_out(file_name, data, mode):
+	out_file_fd = open(file_name, mode)
+	out_file_fd.write(data)
+	out_file_fd.close()
+
+def write_out_dat_stamp(ts, n_plate, data):
+	# year directories should be created once a year from cron
+	# that way we aren't unnecessarily checking for one every minute of every day for a year
+
+	f_ts = ts[0:8]
+	y_ts = ts[0:4]
+	write_out(wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+f_ts, data, 'a')
+
 def decrypt(key,  data):
 	cstate = [0x48,  0x74,  0x65,  0x6D,  0x70,  0x39,  0x39,  0x65]
 	shuffle = [2, 4, 0, 7, 1, 6, 5, 3]
@@ -71,9 +86,10 @@ if __name__ == "__main__":
 			t_val += (values[0x42]/16.0-273.15)
 			t_count += 1
 		time1 = time.time()
-		if((time1 - time0) > 5):
+		if((time1 - time0) > 60):
 			ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
-			print "%s\tT: %2.2f\tCO2: %4i" % (ts, t_val / t_count, co2_val / co2_count)
+			dat_string = "%s\tT: %2.2f\tCO2: %4i\n" % (ts, t_val / t_count, co2_val / co2_count)
+			write_out_dat_stamp(ts, 'co2.dat', dat_string)
 			co2_val = 0
 			co2_count = 0
 			t_val = 0
