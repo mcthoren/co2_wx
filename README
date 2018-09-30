@@ -4,5 +4,5 @@ https://hackaday.io/project/5301/logs
 It's meant to graph the data from a TFA Dostmann USB CO2/Temperature monitor.
 
 TODO:
-* gotta read data from all files then pull the last 48h
+* gotta read data from last 3 files then pull the last 48h
 * get the html template in 
