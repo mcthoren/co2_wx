@@ -30,6 +30,7 @@ def plot(ts, n_plate):
 	plt.xlabel("Date")
 	plt.ylabel(u"Temp (°C)")
 	plt.grid(True)
+	plt.tight_layout()
 	plt.savefig(plot_d+'room_temp.png')
 	plt.close()
 
@@ -39,6 +40,7 @@ def plot(ts, n_plate):
 	plt.xlabel("Date")
 	plt.ylabel(u"CO₂ (ppm)")
 	plt.grid(True)
+	plt.tight_layout()
 	plt.savefig(plot_d+'room_co2.png')
 	plt.close()
 
