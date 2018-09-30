@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# this code indented with actual 0x09 tabs
 
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
