@@ -5,8 +5,33 @@
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
 import sys, fcntl, time, datetime
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 wx_dir = "/home/ghz/co2_wx"
+
+def plot():
+	# default font can't do subscript ₂
+	mpl.rc('font', family='DejaVu Sans')
+
+	date, temp, co2 = np.loadtxt('/tmp/co2.dat.20180930', usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	plt.plot_date(x = date, y = temp, fmt="b-")
+	plt.title("Room Temperature")
+	plt.xlabel("Date")
+	plt.ylabel(u"Temp (°C)")
+	plt.grid(True)
+	plt.savefig('/tmp/temp.png')
+	plt.close()
+
+	plt.plot_date(x = date, y = co2, fmt="g-")
+	plt.title(u"Room CO₂ Levels")
+	plt.xlabel("Date")
+	plt.ylabel(u"CO₂ (ppm)")
+	plt.grid(True)
+	plt.savefig('/tmp/co2.png')
+	plt.close()
 
 def write_out(file_name, data, mode):
 	out_file_fd = open(file_name, mode)
