@@ -7,6 +7,7 @@
 import sys, fcntl, time, datetime
 import numpy as np
 import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
