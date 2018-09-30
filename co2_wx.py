@@ -24,6 +24,7 @@ def plot(ts, n_plate):
 	plot_d = wx_dir+'/plots/'
 
 	date, temp, co2 = np.loadtxt(dat_f, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	plt.figure(figsize=(14, 6), dpi=100)
 	plt.plot_date(x = date, y = temp, fmt="b-")
 	plt.title("Room Temperature")
 	plt.xlabel("Date")
@@ -32,6 +33,7 @@ def plot(ts, n_plate):
 	plt.savefig(plot_d+'room_temp.png')
 	plt.close()
 
+	plt.figure(figsize=(14, 6), dpi=100)
 	plt.plot_date(x = date, y = co2, fmt="g-")
 	plt.title(u"Room CO₂ Levels")
 	plt.xlabel("Date")
