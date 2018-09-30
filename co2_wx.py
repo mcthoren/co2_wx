@@ -4,7 +4,7 @@
 
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
-import sys, fcntl, time, datetime
+import sys, fcntl, time, datetime, os
 import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, t_val / t_count, co2_val / co2_count)
 			write_out_dat_stamp(ts, dat_fname, dat_string)
 			plot(ts, dat_fname)
-			#  rsync -ur --timeout=60 * wx2@slackology.net:/wx2/
+			os.system("/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@slackology.net:/wx2/")
 			co2_val = 0
 			co2_count = 0
 			t_val = 0
