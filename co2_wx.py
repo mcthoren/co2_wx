@@ -12,17 +12,23 @@ import matplotlib.dates as mdates
 
 wx_dir = "/home/ghz/co2_wx"
 
-def plot():
+def plot(ts, n_plate):
 	# default font can't do subscript ₂
 	mpl.rc('font', family='DejaVu Sans')
 
-	date, temp, co2 = np.loadtxt('/tmp/co2.dat.20180930', usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	f_ts = ts[0:8]
+	y_ts = ts[0:4]
+
+	dat_f = wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+f_ts
+	plot_d = wx_dir+'/plots/'
+
+	date, temp, co2 = np.loadtxt(dat_f, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 	plt.plot_date(x = date, y = temp, fmt="b-")
 	plt.title("Room Temperature")
 	plt.xlabel("Date")
 	plt.ylabel(u"Temp (°C)")
 	plt.grid(True)
-	plt.savefig('/tmp/temp.png')
+	plt.savefig(plot_d+'room_temp.png')
 	plt.close()
 
 	plt.plot_date(x = date, y = co2, fmt="g-")
@@ -30,7 +36,7 @@ def plot():
 	plt.xlabel("Date")
 	plt.ylabel(u"CO₂ (ppm)")
 	plt.grid(True)
-	plt.savefig('/tmp/co2.png')
+	plt.savefig(plot_d+'room_co2.png')
 	plt.close()
 
 def write_out(file_name, data, mode):
@@ -80,6 +86,8 @@ if __name__ == "__main__":
 	key = [0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96]
     
 	fp = open(sys.argv[1], "a+b",  0)
+
+	dat_fname = 'co2.dat'
     
 	HIDIOCSFEATURE_9 = 0xC0094806
 	set_report = "\x00" + "".join(chr(e) for e in key)
@@ -116,7 +124,8 @@ if __name__ == "__main__":
 		if((time1 - time0) > 60):
 			ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
 			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, t_val / t_count, co2_val / co2_count)
-			write_out_dat_stamp(ts, 'co2.dat', dat_string)
+			write_out_dat_stamp(ts, dat_fname, dat_string)
+			plot(ts, dat_fname)
 			co2_val = 0
 			co2_count = 0
 			t_val = 0
