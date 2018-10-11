@@ -128,8 +128,7 @@ if __name__ == "__main__":
 		else:
 			op = decrypted[0]
 			val = decrypted[1] << 8 | decrypted[2]
-            
-		values[op] = val
+			values[op] = val
 
 		co2_val = 0
 		co2_count = 0
