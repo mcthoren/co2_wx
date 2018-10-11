@@ -90,6 +90,20 @@ def decrypt(key,  data):
 def hd(d):
 	return " ".join("%02X" % e for e in d)
 
+def gen_index(co2, temp):
+	plate = wx_dir+"/co2_wx_index.html.template"
+	plate_fd = open(plate, 'r')
+	plate_dat = plate_fd.read()
+	plate_fd.close()
+
+	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+
+	plate_dat = plate_dat.replace("CO2", str(co2))
+	plate_dat = plate_dat.replace("ROOMTEMP", str("%.2f" % temp))
+	plate_dat = plate_dat.replace("DATE", ts)
+
+	write_out(wx_dir+'/plots/co2_wx.html', plate_dat, 'w')
+
 if __name__ == "__main__":
 	# Key retrieved from /dev/random, guaranteed to be random ;)
 	key = [0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96]
@@ -132,9 +146,12 @@ if __name__ == "__main__":
 		time1 = time.time()
 		if((time1 - time0) > 60):
 			ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
-			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, t_val / t_count, co2_val / co2_count)
+			temp = t_val / t_count
+			co2 = co2_val / co2_count
+			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, temp, co2)
 			write_out_dat_stamp(ts, dat_fname, dat_string)
 			plot(ts, dat_fname)
+			gen_index(co2, temp)
 			os.system("/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@slackology.net:/wx2/")
 			co2_val = 0
 			co2_count = 0
