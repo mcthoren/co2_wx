@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title> danger! test product! </title>
+</head>
+<body  bgcolor="#000000" text="#206cff" link="#0099ff" vlink="#00ffff"> 
+<center>
+<br><h1>CO₂ levels from Berlin Moabit</h1><h3>(balcony in Moabit).</h3>
+See <a href="https://github.com/mcthoren/co2_wx">for more info.</a><br>
+<br> Current Conditions (updates every ~60s):
+
+<table borders>
+<tr><td>CO₂:</td> <td>CO2 ppm</td> <td>Room Temp:</td>  <td>ROOMTEMP°C</td></tr>
+<tr><td>Last Update:</td>  <td>DATE</td></tr>
+</table>
+
+<br>
+<img src="room_co2.png.png"><br><br>
+<img src="room_temp.png"><br><br>
+</center>
+<br> <br>
+</body> </html>
