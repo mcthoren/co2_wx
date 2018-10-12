@@ -4,7 +4,7 @@
 
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
-import sys, fcntl, time, datetime, os
+import sys, fcntl, time, datetime, os, fileinput
 import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
@@ -17,13 +17,26 @@ def plot(ts, n_plate):
 	# default font can't do subscript ₂
 	mpl.rc('font', family='DejaVu Sans')
 
+	npoints = 2000 # ~48h
+
+	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
+	ydate = (td - datetime.timedelta(1)).strftime("%Y%m%d")
+	yydate = (td - datetime.timedelta(2)).strftime("%Y%m%d")
+
 	f_ts = ts[0:8]
 	y_ts = ts[0:4]
 
-	dat_f = wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+f_ts
+	dat_f0 = wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+f_ts
+	dat_f1 = wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+ydate
+	dat_f2 = wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+yydate
 	plot_d = wx_dir+'/plots/'
 
-	date, temp, co2 = np.loadtxt(dat_f, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	co2_dat  = fileinput.input([dat_f2, dat_f1, dat_f0])
+	date, temp, co2 = np.loadtxt(co2_dat, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+
+	f_pts  = date.size - npoints
+	t_pts  = date.size
+
 	plt.figure(figsize=(14, 6), dpi=100)
 	plt.plot_date(x = date, y = temp, fmt="b-")
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
