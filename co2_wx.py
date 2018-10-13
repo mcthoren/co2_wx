@@ -17,7 +17,7 @@ def plot(ts, n_plate):
 	# default font can't do subscript ₂
 	mpl.rc('font', family='DejaVu Sans')
 
-	npoints = 2000 # ~48h
+	npoints = 2200 # ~48h
 
 	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
 	ydate = (td - datetime.timedelta(1)).strftime("%Y%m%d")
