@@ -38,7 +38,7 @@ def plot(ts, n_plate):
 	t_pts  = date.size
 
 	plt.figure(figsize=(14, 6), dpi=100)
-	plt.plot_date(x = date, y = temp, fmt="b-")
+	plt.plot_date(x = date[f_pts : t_pts], y = temp[f_pts : t_pts], fmt="b-")
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
 	plt.gcf().autofmt_xdate()
 	plt.title("Room Temperature")
@@ -50,7 +50,7 @@ def plot(ts, n_plate):
 	plt.close()
 
 	plt.figure(figsize=(14, 6), dpi=100)
-	plt.plot_date(x = date, y = co2, fmt="g-")
+	plt.plot_date(x = date[f_pts : t_pts], y = co2[f_pts : t_pts], fmt="g-")
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
 	plt.gcf().autofmt_xdate()
 	plt.title(u"Room CO₂ Levels")
