@@ -35,7 +35,6 @@ def plot(ts, n_plate):
 
 	plot_d = wx_dir+'/plots/'
 
-	co2_dat  = fileinput.input([dat_f2, dat_f1, dat_f0])
 	co2_dat  = fileinput.input([dat_f3, dat_f2, dat_f1, dat_f0])
 	date, temp, co2 = np.loadtxt(co2_dat, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 
