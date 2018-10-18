@@ -6,5 +6,4 @@ It's meant to graph the data from a TFA Dostmann USB CO2/Temperature monitor.
 TODO:
  + maybe just pass time objects instead of doing the timestamp conversions dance in the plot func
  + can the plotting be abstracted out into it's own function w.o. doing sth too dumb, like taking 400 ars?
- + y-axis labels on both sides of the plots
  + can the 4 dat_fn lines be just an array?
