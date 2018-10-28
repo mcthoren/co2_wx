@@ -156,10 +156,7 @@ if __name__ == "__main__":
 			val = decrypted[1] << 8 | decrypted[2]
 			values[op] = val
 
-		co2_val = 0
-		co2_count = 0
-		t_val = 0
-		t_count = 0
+		co2_val = co2_count = t_val = t_count = 0
 
 		## From http://co2meters.com/Documentation/AppNotes/AN146-RAD-0401-serial-communication.pdf
 		if 0x50 in values:
@@ -178,8 +175,5 @@ if __name__ == "__main__":
 			plot(ts, dat_fname)
 			gen_index(co2, temp)
 			os.system("/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@slackology.net:/wx2/")
-			co2_val = 0
-			co2_count = 0
-			t_val = 0
-			t_count = 0
+			co2_val = co2_count = t_val = t_count = 0
 			time0 = time1 = time.time()	
