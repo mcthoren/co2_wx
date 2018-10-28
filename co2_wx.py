@@ -140,7 +140,14 @@ if __name__ == "__main__":
 	time0 = time1 = time.time()
 
 	while True:
-		data = list(ord(e) for e in fp.read(8))
+		try:
+			data = list(ord(e) for e in fp.read(8))
+		except IOError:
+			# sometimes the usb brainfreezes. give it a tick, and try again
+			print "omg ioerror 0"
+			sleep(1)
+			break
+
 		decrypted = decrypt(key, data)
 		if decrypted[4] != 0x0d or (sum(decrypted[:3]) & 0xff) != decrypted[3]:
 			print hd(data), " => ", hd(decrypted),  "Checksum error"
