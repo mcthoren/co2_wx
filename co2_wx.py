@@ -6,37 +6,14 @@
 
 import sys, fcntl, time, datetime, os, fileinput
 import numpy as np
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+
+sys.path.append('/home/ghz/wxlib')
+import wxlib as wx
 
 wx_dir = "/home/ghz/co2_wx"
 
-def graph(lx, ly, lfmt, ltitle, lylabel, lfname):
-	plot_d = wx_dir+'/plots/'
-	plt.figure(figsize=(20, 6), dpi=100)
-	plt.grid(True)
-	plt.plot_date(x = lx, y = ly, fmt = lfmt)
-	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
-	plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=4))
-	plt.minorticks_on()
-	plt.gcf().autofmt_xdate()
-	plt.title(ltitle)
-	plt.xlabel("Date (UTC)")
-	plt.ylabel(lylabel)
-	ymin, ymax = plt.ylim()
-	plt.twinx()
-	plt.ylim(ymin, ymax)
-	plt.ylabel(lylabel)
-	plt.tight_layout()
-	plt.savefig(plot_d+lfname)
-	plt.close()
-
 def plot(ts, n_plate):
-	# default font can't do subscript ₂
-	mpl.rc('font', family='DejaVu Sans')
-
 	npoints = 2200 # ~48h
 
 	d_date = ["0000", "0000", "0000", "0000"]
@@ -64,21 +41,8 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", "Room Temperature", u"Temp (°C)", "room_temp.png")
-	graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"Room CO₂ Levels", u"CO₂ (ppm)", "room_co2.png")
-
-def write_out(file_name, data, mode):
-	out_file_fd = open(file_name, mode)
-	out_file_fd.write(data)
-	out_file_fd.close()
-
-def write_out_dat_stamp(ts, n_plate, data):
-	# year directories should be created once a year from cron
-	# that way we aren't unnecessarily checking for one every minute of every day for a year
-
-	f_ts = ts[0:8]
-	y_ts = ts[0:4]
-	write_out(wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+f_ts, data, 'a')
+	wx.graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", "Room Temperature", u"Temp (°C)", plot_d+'room_temp.png')
+	wx.graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"Room CO₂ Levels", u"CO₂ (ppm)", plot_d+'room_co2.png')
 
 def decrypt(key,  data):
 	cstate = [0x48,  0x74,  0x65,  0x6D,  0x70,  0x39,  0x39,  0x65]
@@ -121,7 +85,7 @@ def gen_index(co2, temp):
 	plate_dat = plate_dat.replace("ROOMTEMP", str("%.2f" % temp))
 	plate_dat = plate_dat.replace("DATE", ts)
 
-	write_out(wx_dir+'/plots/co2_wx.html', plate_dat, 'w')
+	wx.write_out(wx_dir+'/plots/co2_wx.html', plate_dat, 'w')
 
 if __name__ == "__main__":
 	# Key retrieved from /dev/random, guaranteed to be random ;)
@@ -171,7 +135,7 @@ if __name__ == "__main__":
 			temp = t_val / t_count
 			co2 = co2_val / co2_count
 			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, temp, co2)
-			write_out_dat_stamp(ts, dat_fname, dat_string)
+			wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 			plot(ts, dat_fname)
 			gen_index(co2, temp)
 			os.system("/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@slackology.net:/wx2/")
