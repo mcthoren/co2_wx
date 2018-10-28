@@ -13,6 +13,26 @@ import matplotlib.dates as mdates
 
 wx_dir = "/home/ghz/co2_wx"
 
+def graph(lx, ly, lfmt, ltitle, lylabel, lfname):
+	plot_d = wx_dir+'/plots/'
+	plt.figure(figsize=(20, 6), dpi=100)
+	plt.grid(True)
+	plt.plot_date(x = lx, y = ly, fmt = lfmt)
+	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
+	plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=4))
+	plt.minorticks_on()
+	plt.gcf().autofmt_xdate()
+	plt.title(ltitle)
+	plt.xlabel("Date (UTC)")
+	plt.ylabel(lylabel)
+	ymin, ymax = plt.ylim()
+	plt.twinx()
+	plt.ylim(ymin, ymax)
+	plt.ylabel(lylabel)
+	plt.tight_layout()
+	plt.savefig(plot_d+lfname)
+	plt.close()
+
 def plot(ts, n_plate):
 	# default font can't do subscript ₂
 	mpl.rc('font', family='DejaVu Sans')
@@ -44,41 +64,8 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	plt.figure(figsize=(20, 6), dpi=100)
-	plt.grid(True)
-	plt.plot_date(x = date[f_pts : t_pts], y = temp[f_pts : t_pts], fmt="b-")
-	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
-	plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=4))
-	plt.minorticks_on()
-	plt.gcf().autofmt_xdate()
-	plt.title("Room Temperature")
-	plt.xlabel("Date (UTC)")
-	plt.ylabel(u"Temp (°C)")
-	ymin, ymax = plt.ylim()
-	plt.twinx()
-	plt.ylim(ymin, ymax)
-	plt.ylabel(u"Temp (°C)")
-	plt.tight_layout()
-	plt.savefig(plot_d+'room_temp.png')
-	plt.close()
-
-	plt.figure(figsize=(20, 6), dpi=100)
-	plt.grid(True)
-	plt.plot_date(x = date[f_pts : t_pts], y = co2[f_pts : t_pts], fmt="g-")
-	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
-	plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=4))
-	plt.minorticks_on()
-	plt.gcf().autofmt_xdate()
-	plt.title(u"Room CO₂ Levels")
-	plt.xlabel("Date (UTC)")
-	plt.ylabel(u"CO₂ (ppm)")
-	ymin, ymax = plt.ylim()
-	plt.twinx()
-	plt.ylim(ymin, ymax)
-	plt.ylabel(u"CO₂ (ppm)")
-	plt.tight_layout()
-	plt.savefig(plot_d+'room_co2.png')
-	plt.close()
+	graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", "Room Temperature", u"Temp (°C)", "room_temp.png")
+	graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"Room CO₂ Levels", u"CO₂ (ppm)", "room_co2.png")
 
 def write_out(file_name, data, mode):
 	out_file_fd = open(file_name, mode)
