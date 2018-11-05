@@ -109,8 +109,8 @@ if __name__ == "__main__":
 		except IOError:
 			# sometimes the usb brainfreezes. give it a tick, and try again
 			print "omg ioerror 0"
-			sleep(1)
-			break
+			time.sleep(1)
+			continue
 
 		decrypted = decrypt(key, data)
 		if decrypted[4] != 0x0d or (sum(decrypted[:3]) & 0xff) != decrypted[3]:
