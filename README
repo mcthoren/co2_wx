@@ -3,6 +3,13 @@ https://hackaday.io/project/5301/logs
 
 It's meant to graph the data from a TFA Dostmann USB CO2/Temperature monitor.
 
+To Install:
+	+ git clone https://github.com/mcthoren/co2_wx.git
+	+ git clone https://github.com/mcthoren/wxlib.git
+	+ aptitude install python-numpy python-matplotlib
+	+ install udev rules
+	+ udevadm control --reload-rules && udevadm trigger
+
 TODO:
  + maybe just pass time objects instead of doing the timestamp conversions dance in the plot func
  + can the 4 dat_fn lines be just an array?
