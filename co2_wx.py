@@ -8,10 +8,14 @@ import sys, fcntl, time, datetime, os, fileinput
 import numpy as np
 import matplotlib.dates as mdates
 
-sys.path.append('/home/ghz/wxlib')
-import wxlib as wx
+base_dir = "/import/home/ghz"
+wx_dir = base_dir+'/co2_wx'
+wxlib_dir = base_dir+'/wxlib'
+plot_d = wx_dir+'/plots/'
+wx_user = "wx4"
 
-wx_dir = "/home/ghz/co2_wx"
+sys.path.append(wxlib_dir)
+import wxlib as wx
 
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
@@ -29,8 +33,6 @@ def plot(ts, n_plate):
 	dat_f1 = wx_dir+'/data/'+d_year[1]+'/'+n_plate+'.'+d_date[1]
 	dat_f2 = wx_dir+'/data/'+d_year[2]+'/'+n_plate+'.'+d_date[2]
 	dat_f3 = wx_dir+'/data/'+d_year[3]+'/'+n_plate+'.'+d_date[3]
-
-	plot_d = wx_dir+'/plots/'
 
 	co2_dat  = fileinput.input([dat_f3, dat_f2, dat_f1, dat_f0])
 	date, temp, co2 = np.loadtxt(co2_dat, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
@@ -94,6 +96,7 @@ if __name__ == "__main__":
 	fp = open(sys.argv[1], "a+b",  0)
 
 	dat_fname = 'co2.dat'
+	wx.proof_dir(plot_d)
     
 	HIDIOCSFEATURE_9 = 0xC0094806
 	set_report = "\x00" + "".join(chr(e) for e in key)
@@ -138,6 +141,6 @@ if __name__ == "__main__":
 			wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 			plot(ts, dat_fname)
 			gen_index(co2, temp)
-			os.system("/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@slackology.net:/wx2/")
+			os.system('/usr/bin/rsync -ur --timeout=60 '+wx_dir+'/* '+wx_user+'@darkdata.org:/'+wx_user+'/')
 			co2_val = co2_count = t_val = t_count = 0
 			time0 = time1 = time.time()	
