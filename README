@@ -7,6 +7,8 @@ To Install:
 	+ git clone https://github.com/mcthoren/co2_wx.git
 	+ git clone https://github.com/mcthoren/wxlib.git
 	+ aptitude install python-numpy python-matplotlib
+	+ add a cron entry like (watch the path):
+	  00	00	01	01	*	mkdir /home/ghz/co2_wx/data/$(date +\%Y)
 	+ install udev rules
 	+ udevadm control --reload-rules && udevadm trigger
 
