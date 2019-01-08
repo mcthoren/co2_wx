@@ -43,8 +43,8 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	wx.graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", "Room Temperature", u"Temp (°C)", plot_d+'room_temp.png')
-	wx.graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"Room CO₂ Levels", u"CO₂ (ppm)", plot_d+'room_co2.png')
+	wx.graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", "Temperature", u"Temp (°C)", plot_d+'room_temp.png')
+	wx.graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"CO₂ Levels", u"CO₂ (ppm)", plot_d+'room_co2.png')
 
 def decrypt(key,  data):
 	cstate = [0x48,  0x74,  0x65,  0x6D,  0x70,  0x39,  0x39,  0x65]
