@@ -4,18 +4,18 @@
 
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
-import sys, fcntl, time, datetime, os, fileinput
+import sys, fcntl, time, datetime, os, fileinput, argparse
 import numpy as np
 import matplotlib.dates as mdates
 
 base_dir = "/import/home/ghz"
 wx_dir = base_dir+'/co2_wx'
-wxlib_dir = base_dir+'/wxlib'
+# wxlib_dir = base_dir+'/wxlib'
 plot_d = wx_dir+'/plots/'
-wx_user = "wx4"
+# wx_user = "wx4"
 
-sys.path.append(wxlib_dir)
-import wxlib as wx
+# sys.path.append(wxlib_dir)
+# import wxlib as wx
 
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
@@ -90,10 +90,47 @@ def gen_index(co2, temp):
 	wx.write_out(wx_dir+'/plots/co2_wx.html', plate_dat, 'w')
 
 if __name__ == "__main__":
+
+	parser = argparse.ArgumentParser(description='run.')
+
+	# group = parser.add_mutually_exclusive_group()
+	parser.add_argument('--indoor', dest = 'probe_in', action = 'store_true', help = 'setup everything for the indoor probe')
+	parser.add_argument('--outdoor', dest = 'probe_out', action = 'store_true', help = 'setup eveyrthing for the outdoor probe')
+
+	args = parser.parse_args()
+
+	if (args.probe_in):
+		# spiffy
+		co2_dev = "/dev/co2_sensor0"
+		base_dir = "/import/home/ghz"
+		wx_user = "wx4"
+
+	if (args.probe_out):
+		# elf
+		co2_dev = "/dev/co2_sensor0"
+		base_dir = "/home/ghz"
+		wx_user = "wx3"
+
+	if ((args.probe_in | args.probe_out) == 0):
+		print "please use either the --indoor or --outdoor option to select a probe"
+		exit()
+
+	if (args.probe_in & args.probe_out):
+		print "this shouldn't happen. pleaes select just one probe."
+		exit()
+
+	wx_dir = base_dir+'/co2_wx'
+	plot_d = wx_dir+'/plots/'
+
+	wxlib_dir = base_dir+'/wxlib'
+	sys.path.append(wxlib_dir)
+	import wxlib as wx
+
 	# Key retrieved from /dev/random, guaranteed to be random ;)
 	key = [0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96]
     
-	fp = open(sys.argv[1], "a+b",  0)
+	# fp = open(sys.argv[1], "a+b",  0)
+	fp = open(co2_dev, "a+b",  0)
 
 	dat_fname = 'co2.dat'
 	wx.proof_dir(plot_d)
