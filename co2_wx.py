@@ -8,15 +8,6 @@ import sys, fcntl, time, datetime, os, fileinput, argparse
 import numpy as np
 import matplotlib.dates as mdates
 
-base_dir = "/import/home/ghz"
-wx_dir = base_dir+'/co2_wx'
-# wxlib_dir = base_dir+'/wxlib'
-plot_d = wx_dir+'/plots/'
-# wx_user = "wx4"
-
-# sys.path.append(wxlib_dir)
-# import wxlib as wx
-
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
 
@@ -91,11 +82,11 @@ def gen_index(co2, temp):
 
 if __name__ == "__main__":
 
-	parser = argparse.ArgumentParser(description='run.')
+	parser = argparse.ArgumentParser(description=u'Read CO₂ data, and then upload it somewhere.')
 
-	# group = parser.add_mutually_exclusive_group()
-	parser.add_argument('--indoor', dest = 'probe_in', action = 'store_true', help = 'setup everything for the indoor probe')
-	parser.add_argument('--outdoor', dest = 'probe_out', action = 'store_true', help = 'setup eveyrthing for the outdoor probe')
+	group = parser.add_mutually_exclusive_group()
+	group.add_argument('--indoor', dest = 'probe_in', action = 'store_true', help = 'setup everything for the indoor probe')
+	group.add_argument('--outdoor', dest = 'probe_out', action = 'store_true', help = 'setup eveyrthing for the outdoor probe')
 
 	args = parser.parse_args()
 
@@ -129,7 +120,6 @@ if __name__ == "__main__":
 	# Key retrieved from /dev/random, guaranteed to be random ;)
 	key = [0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96]
     
-	# fp = open(sys.argv[1], "a+b",  0)
 	fp = open(co2_dev, "a+b",  0)
 
 	dat_fname = 'co2.dat'
