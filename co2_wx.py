@@ -66,7 +66,7 @@ def decrypt(key,  data):
 def hd(d):
 	return " ".join("%02X" % e for e in d)
 
-def gen_index(co2, temp):
+def gen_index(co2, temp, title):
 	plate = wx_dir+"/co2_wx_index.html.template"
 	plate_fd = open(plate, 'r')
 	plate_dat = plate_fd.read()
@@ -76,6 +76,7 @@ def gen_index(co2, temp):
 
 	plate_dat = plate_dat.replace("CO2", str(co2))
 	plate_dat = plate_dat.replace("ROOMTEMP", str("%.2f" % temp))
+	plate_dat = plate_dat.replace("TITLE", title)
 	plate_dat = plate_dat.replace("DATE", ts)
 
 	wx.write_out(wx_dir+'/plots/co2_wx.html', plate_dat, 'w')
@@ -95,12 +96,14 @@ if __name__ == "__main__":
 		co2_dev = "/dev/co2_sensor0"
 		base_dir = "/import/home/ghz"
 		wx_user = "wx4"
+		title = "CO₂ levels from a room in Augsburg, Germany"
 
 	if (args.probe_out):
 		# elf
 		co2_dev = "/dev/co2_sensor0"
 		base_dir = "/home/ghz"
 		wx_user = "wx2"
+		title = "CO₂ levels from a balcony in Augsburg, Germany"
 
 	if ((args.probe_in | args.probe_out) == 0):
 		print "please use either the --indoor or --outdoor option to select a probe"
@@ -167,7 +170,7 @@ if __name__ == "__main__":
 			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, temp, co2)
 			wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 			plot(ts, dat_fname)
-			gen_index(co2, temp)
+			gen_index(co2, temp, title)
 			os.system('/usr/bin/rsync -ur --timeout=60 '+wx_dir+'/* '+wx_user+'@darkdata.org:/'+wx_user+'/')
 			co2_val = co2_count = t_val = t_count = 0
 			time0 = time1 = time.time()	
