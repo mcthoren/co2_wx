@@ -12,6 +12,3 @@ To Install:
 
 TODO:
  + maybe just pass time objects instead of doing the timestamp conversions dance in the plot func
- + can the 4 dat_fn lines be just an array?
- + handle missing data files on start up
- + check for at least 4? data points before trying to graph
