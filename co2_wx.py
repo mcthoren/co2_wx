@@ -11,22 +11,21 @@ import matplotlib.dates as mdates
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
 
-	d_date = ["0000", "0000", "0000", "0000"]
-	d_year = ["0000", "0000", "0000", "0000"]
+	dat_f = ["0000", "0000", "0000", "0000"]
 
 	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
 
-	for i in range(0, 4):
-		d_date[i] = (td - datetime.timedelta(i)).strftime("%Y%m%d")
-		d_year[i] = (td - datetime.timedelta(i)).strftime("%Y")
+	for i in range (0, 4):
+		d_date = (td - datetime.timedelta(i)).strftime("%Y%m%d")
+		d_year = (td - datetime.timedelta(i)).strftime("%Y")
+		dat_f[3 - i] = wx_dir+'/data/'+d_year+'/'+n_plate+'.'+d_date
+		wx.proof_dat_f(dat_f[i])
 
-	dat_f0 = wx_dir+'/data/'+d_year[0]+'/'+n_plate+'.'+d_date[0]
-	dat_f1 = wx_dir+'/data/'+d_year[1]+'/'+n_plate+'.'+d_date[1]
-	dat_f2 = wx_dir+'/data/'+d_year[2]+'/'+n_plate+'.'+d_date[2]
-	dat_f3 = wx_dir+'/data/'+d_year[3]+'/'+n_plate+'.'+d_date[3]
-
-	co2_dat  = fileinput.input([dat_f3, dat_f2, dat_f1, dat_f0])
+	co2_dat = fileinput.input(dat_f)
 	date, temp, co2 = np.loadtxt(co2_dat, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+
+	if date.size < 4:
+		return 0; # not enough points yet. wait for more
 
 	if date.size < npoints:
 		npoints = date.size - 1
