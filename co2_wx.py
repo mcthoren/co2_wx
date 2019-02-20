@@ -110,7 +110,7 @@ if __name__ == "__main__":
 		exit()
 
 	if (args.probe_in & args.probe_out):
-		print "this shouldn't happen. pleaes select just one probe."
+		print "this shouldn't happen. please select just one probe."
 		exit()
 
 	wx_dir = base_dir+'/co2_wx'
