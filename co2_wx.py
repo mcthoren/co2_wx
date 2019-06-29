@@ -19,7 +19,7 @@ def plot(ts, n_plate):
 		d_date = (td - datetime.timedelta(i)).strftime("%Y%m%d")
 		d_year = (td - datetime.timedelta(i)).strftime("%Y")
 		dat_f[3 - i] = wx_dir+'/data/'+d_year+'/'+n_plate+'.'+d_date
-		wx.proof_dat_f(dat_f[i])
+		wx.proof_dat_f(dat_f[3 - i])
 
 	co2_dat = fileinput.input(dat_f)
 	date, temp, co2 = np.loadtxt(co2_dat, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
