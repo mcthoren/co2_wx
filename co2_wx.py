@@ -134,6 +134,7 @@ if __name__ == "__main__":
 	values = {}
     
 	time0 = time1 = time.time()
+	co2_val = co2_count = t_val = t_count = 0
 
 	while True:
 		try:
@@ -151,8 +152,6 @@ if __name__ == "__main__":
 			op = decrypted[0]
 			val = decrypted[1] << 8 | decrypted[2]
 			values[op] = val
-
-		co2_val = co2_count = t_val = t_count = 0
 
 		## From http://co2meters.com/Documentation/AppNotes/AN146-RAD-0401-serial-communication.pdf
 		if 0x50 in values:
