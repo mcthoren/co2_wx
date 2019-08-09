@@ -1,4 +1,4 @@
-This is a hacked up version of the code from the nice person here:
+This started with the code from the nice person here:
 https://hackaday.io/project/5301/logs
 
 It's meant to graph the data from a TFA Dostmann USB CO2/Temperature monitor.
@@ -10,5 +10,14 @@ To Install:
 	+ install udev rules
 	+ udevadm control --reload-rules && udevadm trigger
 
+
+This code can be found in the following places:
++ https://wx4.slackology.net/plots/co2_wx.html	<--page
++ https://wx4.slackology.net/			<--code
++ https://wx2.slackology.net/plots/co2_wx.html	<--page
++ https://wx2.slackology.net/			<--code
++ https://github.com/mcthoren/co2_wx		<--code
+
 TODO:
  + maybe just pass time objects instead of doing the timestamp conversions dance in the plot func
+ + using a fixed number of points leads to wide differences in the amount of data graphed, even between insturments of the same make and model.
