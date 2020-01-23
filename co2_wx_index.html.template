@@ -12,7 +12,7 @@ See <a href="https://github.com/mcthoren/co2_wx">here</a> for more info.<br>
 <br> Current Conditions (updates every ~60s):
 
 <table borders>
-<tr><td>CO₂:</td> <td>CO2 ppm</td> <td>Room Temp:</td>  <td>ROOMTEMP°C</td></tr>
+<tr><td>CO₂:</td> <td>CO2 ppm</td> <td>Temp:</td>  <td>ROOMTEMP°C</td></tr>
 <tr><td>Last Update:</td>  <td>DATE</td></tr>
 </table>
 
