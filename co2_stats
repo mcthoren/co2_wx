@@ -1,0 +1,36 @@
+#!/usr/bin/perl -T
+
+use strict;
+use warnings;
+
+sub usage() {
+	print "usage: $0 filename\n";
+	exit;
+}
+
+my ($num, $t_sum, $co2_sum) = (0, 0, 0);
+
+unless ($#ARGV == 0) {
+	usage();
+}
+
+my $read_f = $ARGV[0] ;
+
+unless (-e $read_f) {
+	usage;
+}
+
+open(IN, "<", $read_f) or die "omg! can't open input file: $read_f";
+
+while (<IN>) {
+	chomp;
+	my ($x, $a, $temp, $y, $q, $co2, $z) = split;
+	$t_sum += $temp; 
+	$co2_sum += $co2; 
+	$num++;
+}
+
+printf "Avg Temp: %.2f °C\n", $t_sum / $num;
+printf "Avg CO₂ level: %.2f ppm\n", $co2_sum / $num;
+
+close(IN);
