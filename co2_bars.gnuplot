@@ -1,15 +1,19 @@
+set term pngcairo size 2000, 512 font ",10"
+set title "Average Daily CO_2 Levels"
 set y2tics
 set key outside below
+set xdata time
+set timefmt "%Y%m%d"
+set xlabel "Time (UTC)" offset 0.0, -1.6
+set format x "%F"
 set grid
-set ylabel "CO₂ (ppm)"
-set y2label "CO₂ (ppm)"
-set term pngcairo size 2000, 512 font ",10"
-set xtics auto
+set ylabel "CO_2 (ppm)"
+set y2label "CO_2 (ppm)"
+set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics 
 set grid mxtics
 
-dat_f='/home/ghz/co2_wx/data/co2.day.avg'
+dat_f="~/co2_wx/data/co2.day.avg"
 
-set title "Average Daily CO₂ Levels"
-set output '/home/ghz/co2_wx/data/plots/co2_day_avgs.png'
-plot dat_f using 1:3 t 'CO₂ (ppm)' with boxes linecolor rgb "#ff0000"
+set output "~/co2_wx/plots/co2_day_avgs.png"
+plot dat_f using 1:5 t 'CO_2 (ppm)' with boxes linecolor rgb "#0000ff"
