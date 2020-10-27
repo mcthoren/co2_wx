@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="refresh" content="60">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="dd.css">
+<link rel="stylesheet" type="text/css" href="https://darkdata.org/dd.css">
+<link rel="icon" href="https://slackology.net/favicon.ico" type="image/png"/>
 <title> CO₂ (ppm) + Temp (°C) </title>
 </head>
 <body>
@@ -21,6 +22,7 @@ See <a href="https://github.com/mcthoren/co2_wx">here</a> for more info.<br>
 <br>
 <img src="room_co2.png"><br><br>
 <img src="room_temp.png"><br><br>
+<img src="co2_day_avgs.png"><br><br>
 </center>
 <br> <br>
 </body> </html>
