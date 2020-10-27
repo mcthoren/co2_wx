@@ -8,8 +8,6 @@ sub usage() {
 	exit;
 }
 
-my ($num, $t_sum, $co2_sum) = (0, 0, 0);
-
 unless ($#ARGV == 0) {
 	usage();
 }
@@ -19,6 +17,8 @@ my $read_f = $ARGV[0] ;
 unless (-e $read_f && -s $read_f) {
 	usage;
 }
+
+my ($num, $t_sum, $co2_sum) = (0, 0, 0);
 
 open(IN, "<", $read_f) or die "omg! can't open input file: $read_f";
 
