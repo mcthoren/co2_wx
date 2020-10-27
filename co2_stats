@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 sub usage() {
-	print "usage: $0 filename\n";
+	print STDERR "usage: $0 filename\n";
 	exit;
 }
 
@@ -16,7 +16,7 @@ unless ($#ARGV == 0) {
 
 my $read_f = $ARGV[0] ;
 
-unless (-e $read_f) {
+unless (-e $read_f && -s $read_f) {
 	usage;
 }
 
@@ -30,7 +30,7 @@ while (<IN>) {
 	$num++;
 }
 
+printf "Avg CO₂ level: %.2f ppm\t", $co2_sum / $num;
 printf "Avg Temp: %.2f °C\n", $t_sum / $num;
-printf "Avg CO₂ level: %.2f ppm\n", $co2_sum / $num;
 
 close(IN);
