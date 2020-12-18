@@ -1,6 +1,7 @@
 set term pngcairo size 2000, 512 font ",10"
 set title "Average Daily CO_2 Levels"
 set y2tics
+set mytics
 set key outside below
 set xdata time
 set timefmt "%Y%m%d"
