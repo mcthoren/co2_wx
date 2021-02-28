@@ -58,7 +58,7 @@ def decrypt(data):
 	return out
 
 def hd(d):
-	return " ".join("%02X" % e for e in d)
+	return " ".join("0x%02x" % e for e in d)
 
 def gen_index(co2, temp, title):
 	plate = wx_dir+"/co2_wx_index.html.template"
@@ -79,9 +79,10 @@ if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description=u'Read CO₂ data, and then upload it somewhere.')
 
+	parser.add_argument('--debug', dest = 'debug', action = 'store_true', help = u'dump pre and post decrypt data')
 	group = parser.add_mutually_exclusive_group()
-	group.add_argument('--indoor', dest = 'probe_in', action = 'store_true', help = 'setup everything for the indoor probe')
-	group.add_argument('--outdoor', dest = 'probe_out', action = 'store_true', help = 'setup eveyrthing for the outdoor probe')
+	group.add_argument('--indoor', dest = 'probe_in', action = 'store_true', help = u'setup everything for the indoor probe')
+	group.add_argument('--outdoor', dest = 'probe_out', action = 'store_true', help = u'setup eveyrthing for the outdoor probe')
 
 	args = parser.parse_args()
 
@@ -138,7 +139,8 @@ if __name__ == "__main__":
 			continue
 
 		decrypted = decrypt(data)
-		print(hd(data), " => ", hd(decrypted))
+		if args.debug:
+			print(hd(data), " => ", hd(decrypted))
 		if decrypted[4] != 0x0d or (sum(decrypted[:3]) & 0xff) != decrypted[3]:
 			print(hd(data), " => ", hd(decrypted),  "Checksum error")
 		else:
