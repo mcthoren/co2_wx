@@ -11,6 +11,10 @@ import matplotlib.dates as mdates
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+# yet another wonky converter
+def yawc(data):
+	return mdates.strpdate2num('%Y%m%d%H%M%S')(data.decode('utf8'))
+
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
 
@@ -25,7 +29,7 @@ def plot(ts, n_plate):
 		wx.proof_dat_f(dat_f[3 - i])
 
 	co2_dat = fileinput.input(dat_f)
-	date, temp, co2 = np.loadtxt(co2_dat, usecols = (0, 2, 5), unpack = True, encoding = u'utf8', converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	date, temp, co2 = np.loadtxt(co2_dat, usecols = (0, 2, 5), unpack = True, encoding = u'utf8', converters={ 0: yawc})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
