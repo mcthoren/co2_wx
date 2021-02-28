@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # this code indented with actual 0x09 tabs
 
@@ -7,6 +7,9 @@
 import sys, fcntl, time, datetime, os, fileinput, argparse
 import numpy as np
 import matplotlib.dates as mdates
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
@@ -22,7 +25,7 @@ def plot(ts, n_plate):
 		wx.proof_dat_f(dat_f[3 - i])
 
 	co2_dat = fileinput.input(dat_f)
-	date, temp, co2 = np.loadtxt(co2_dat, usecols=(0, 2, 5), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	date, temp, co2 = np.loadtxt(co2_dat, usecols = (0, 2, 5), unpack = True, encoding = u'utf8', converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
@@ -33,10 +36,10 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	wx.graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", "Temperature", u"Temp (°C)", plot_d+'room_temp.png')
+	wx.graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", u"Temperature", u"Temp (°C)", plot_d+'room_temp.png')
 	wx.graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"CO₂ Levels", u"CO₂ (ppm)", plot_d+'room_co2.png')
 
-def decrypt(key,  data):
+def decrypt(data):
 	cstate = [0x48,  0x74,  0x65,  0x6D,  0x70,  0x39,  0x39,  0x65]
 	shuffle = [2, 4, 0, 7, 1, 6, 5, 3]
     
@@ -44,13 +47,9 @@ def decrypt(key,  data):
 	for i, o in enumerate(shuffle):
 		phase1[o] = data[i]
     
-	phase2 = [0] * 8
-	for i in range(8):
-		phase2[i] = phase1[i] ^ key[i]
-    
 	phase3 = [0] * 8
 	for i in range(8):
-		phase3[i] = ( (phase2[i] >> 3) | (phase2[ (i-1+8)%8 ] << 5) ) & 0xff
+		phase3[i] = ( (phase1[i] >> 3) | (phase1[ (i-1+8)%8 ] << 5) ) & 0xff
     
 	ctmp = [0] * 8
 	for i in range(8):
@@ -105,11 +104,11 @@ if __name__ == "__main__":
 		title = "CO₂ levels from a balcony in Augsburg, Germany"
 
 	if ((args.probe_in | args.probe_out) == 0):
-		print "please use either the --indoor or --outdoor option to select a probe"
+		print("please use either the --indoor or --outdoor option to select a probe")
 		exit()
 
 	if (args.probe_in & args.probe_out):
-		print "this shouldn't happen. please select just one probe."
+		print("this shouldn't happen. please select just one probe.")
 		exit()
 
 	wx_dir = base_dir+'/co2_wx'
@@ -119,8 +118,8 @@ if __name__ == "__main__":
 	sys.path.append(wxlib_dir)
 	import wxlib as wx
 
-	# Key retrieved from /dev/random, guaranteed to be random ;)
-	key = [0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96]
+	# make a key of all 0s, then we don't need to other with it in the decryptiong step
+	key = [0x00] * 8
     
 	fp = open(co2_dev, "a+b",  0)
 
@@ -138,16 +137,20 @@ if __name__ == "__main__":
 
 	while True:
 		try:
+			# data = list(e for e in fp.read(8))
+			# data = list(fp.read(8))
 			data = list(ord(e) for e in fp.read(8))
+			print(data)
 		except IOError:
 			# sometimes the usb brainfreezes. give it a tick, and try again
-			print "omg ioerror 0"
+			print("omg ioerror 0")
 			time.sleep(1)
 			continue
 
-		decrypted = decrypt(key, data)
+		decrypted = decrypt(data)
+		print(hd(data), " => ", hd(decrypted))
 		if decrypted[4] != 0x0d or (sum(decrypted[:3]) & 0xff) != decrypted[3]:
-			print hd(data), " => ", hd(decrypted),  "Checksum error"
+			print(hd(data), " => ", hd(decrypted),  "Checksum error")
 		else:
 			op = decrypted[0]
 			val = decrypted[1] << 8 | decrypted[2]
