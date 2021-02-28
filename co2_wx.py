@@ -1,19 +1,11 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# this code indented with actual 0x09 tabs
 
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
 import sys, fcntl, time, datetime, os, fileinput, argparse
 import numpy as np
 import matplotlib.dates as mdates
-
-reload(sys)
-sys.setdefaultencoding('utf8')
-
-# yet another wonky converter
-def yawc(data):
-	return mdates.strpdate2num('%Y%m%d%H%M%S')(data.decode('utf8'))
 
 def plot(ts, n_plate):
 	npoints = 2200 # ~48h
@@ -29,7 +21,7 @@ def plot(ts, n_plate):
 		wx.proof_dat_f(dat_f[3 - i])
 
 	co2_dat = fileinput.input(dat_f)
-	date, temp, co2 = np.loadtxt(co2_dat, usecols = (0, 2, 5), unpack = True, encoding = u'utf8', converters={ 0: yawc})
+	date, temp, co2 = np.loadtxt(co2_dat, usecols = (0, 2, 5), unpack = True, encoding = u'utf8', converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
@@ -138,10 +130,7 @@ if __name__ == "__main__":
 
 	while True:
 		try:
-			# data = list(e for e in fp.read(8))
-			# data = list(fp.read(8))
-			data = list(ord(e) for e in fp.read(8))
-			print(data)
+			data = fp.read(8)
 		except IOError:
 			# sometimes the usb brainfreezes. give it a tick, and try again
 			print("omg ioerror 0")
