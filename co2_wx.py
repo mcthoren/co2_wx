@@ -118,17 +118,14 @@ if __name__ == "__main__":
 	sys.path.append(wxlib_dir)
 	import wxlib as wx
 
-	# make a key of all 0s, then we don't need to other with it in the decryptiong step
-	key = [0x00] * 8
-    
 	fp = open(co2_dev, "a+b",  0)
 
 	dat_fname = 'co2.dat'
 	wx.proof_dir(plot_d)
     
+	# just send the stupid thing a bunch of zeros and skip any complications with a key
 	HIDIOCSFEATURE_9 = 0xC0094806
-	set_report = "\x00" + "".join(chr(e) for e in key)
-	fcntl.ioctl(fp, HIDIOCSFEATURE_9, set_report)
+	fcntl.ioctl(fp, HIDIOCSFEATURE_9, "\x00" * 9)
     
 	values = {}
     
