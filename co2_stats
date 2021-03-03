@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use utf8;
 
 sub usage() {
 	print STDERR "usage: $0 filename\n";
@@ -17,6 +18,9 @@ my $read_f = $ARGV[0] ;
 unless (-e $read_f && -s $read_f) {
 	usage;
 }
+
+binmode(STDIN, ":encoding(utf8)");
+binmode(STDOUT, ":encoding(utf8)");
 
 my ($num, $t_sum, $co2_sum) = (0, 0, 0);
 
