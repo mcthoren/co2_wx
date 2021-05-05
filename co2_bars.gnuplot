@@ -16,5 +16,6 @@ set grid mxtics
 
 dat_f="~/co2_wx/data/co2.day.avg"
 
+set style fill solid 0.50 noborder
 set output "~/co2_wx/plots/co2_day_avgs.png"
 plot dat_f using 1:5 t 'CO_2 (ppm)' with boxes linecolor rgb "#0000ff"
