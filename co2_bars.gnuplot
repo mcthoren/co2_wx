@@ -12,6 +12,7 @@ set ylabel "CO_2 (ppm)"
 set y2label "CO_2 (ppm)"
 set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics 
+set xrange [:] noextend
 set grid mxtics
 
 dat_f="~/co2_wx/data/co2.day.avg"
