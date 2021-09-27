@@ -14,5 +14,6 @@ cd "${HD}" || exit
 CO2_AVG="$( ${HD}/co2_stats "${DATD}/co2.dat.${DD}" )"
 
 echo -e "${DD}\t${CO2_AVG}" >> "${HD}/data/co2.day.avg"
+tail -30 "${HD}/data/co2.day.avg" > "${HD}/data/co2.day.avg.30"
 
 /usr/bin/gnuplot "${HD}/co2_bars.gnuplot"
