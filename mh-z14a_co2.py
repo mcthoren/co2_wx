@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
 		if itr >= 58:
 			ts = time.strftime("%FT%TZ", time.gmtime())
-			dat_s = "{0:s}\tCO₂: {1:0.1f}\n".format(ts, co2_ppm / itr, "utf-8")
+			dat_s = "{0:s}\tCO₂: {1:0.1f} ppm\n".format(ts, co2_ppm / itr, "utf-8")
 			wx.write_out_dat_stamp_iso(ts, dat_fname, dat_s, wx_dir)
 			itr = 0
 			co2_ppm = 0.0
