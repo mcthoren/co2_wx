@@ -15,8 +15,7 @@ set term pngcairo size 2000, 512 font ",10"
 set format y "%.1f"
 set format y2 "%.1f"
 
-dat_f="/tmp/co2/data/dust.dat.2-3_day"
-dat_f="/tmp/co2/data/2021/co2.dat.2021-10-13"
+dat_f="/tmp/co2/data/co2.dat.2-3_day"
 
 set ylabel "CO₂ (ppm)"
 set y2label "CO₂ (ppm)"
