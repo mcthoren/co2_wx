@@ -66,7 +66,7 @@ def gen_index(co2, temp, title):
 	plate_dat = plate_fd.read()
 	plate_fd.close()
 
-	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+	ts = time.strftime("%FT%TZ", time.gmtime())
 
 	plate_dat = plate_dat.replace("CO2", str("%.0f" % co2))
 	plate_dat = plate_dat.replace("ROOMTEMP", str("%.2f" % temp))
