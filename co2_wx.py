@@ -157,7 +157,7 @@ if __name__ == "__main__":
 			t_count += 1
 		time1 = time.time()
 		if((time1 - time0) > 60):
-			ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
+			ts = time.strftime("%Y%m%d%H%M%S", time.gmtime(float(time1)))
 			temp = t_val / t_count
 			co2 = co2_val / co2_count
 			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, temp, co2)
