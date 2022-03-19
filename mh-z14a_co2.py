@@ -32,14 +32,16 @@ detect_range_c = [0xff, 0x01, 0x99, 0x00, 0x00, 0x00, 0x13, 0x88, 0xcb]
 zero_point_cal_c = [0xff, 0x01, 0x87, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78]
 
 debug = 1
+def init_port(p_dev):
+	p_dev.flushInput()
+	p_dev.flushOutput()
+	p_dev.write(bytearray(detect_range_c))
 
 if __name__ == '__main__':
 	dat_fname = 'co2.dat'
 
 	port_dev = serial.Serial(port, 9600, timeout = 1)
-	port_dev.flushInput()
-	port_dev.flushOutput()
-	port_dev.write(bytearray(detect_range_c))
+	init_port(port_dev)
 	
 	itr = 0
 	co2_ppm = 0.0
@@ -60,6 +62,7 @@ if __name__ == '__main__':
 				print("check sum: ", read_bytes[8])
 				print("calc sum: ", 0xff & (~ sum(read_bytes[1:8]) + 1), "\n")
 				time.sleep(1)
+				init_port(port_dev)
 				continue
 
 		if itr >= 58:
