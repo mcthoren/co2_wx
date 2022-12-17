@@ -98,7 +98,7 @@ if __name__ == "__main__":
 		co2_dev = "/dev/co2_sensor0"
 		base_dir = "/home/ghz"
 		wx_user = "wx2"
-		title = "CO₂ levels from a balcony in Augsburg, Germany"
+		title = "CO₂ levels from a balcony in Berlin"
 
 	if ((args.probe_in | args.probe_out) == 0):
 		print("please use either the --indoor or --outdoor option to select a probe")
