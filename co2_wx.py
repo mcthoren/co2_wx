@@ -91,7 +91,7 @@ if __name__ == "__main__":
 		co2_dev = "/dev/co2_sensor0"
 		base_dir = "/import/home/ghz"
 		wx_user = "wx4"
-		title = "CO₂ levels from a room in Augsburg, Germany"
+		title = "CO₂ levels from my Apartment in Berlin"
 
 	if (args.probe_out):
 		# elf
