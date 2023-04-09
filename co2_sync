@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# the plan is, this script is called with a cron job sth like so:
+#minute	hour	mday	month	wday	command
+# *	*	*	*	*	~/co2_wx/co2_sync
+
+LOCK="${HOME}/repos/co2_wx/plots/co2.lock"
+
+[ -e "${LOCK}" ] && {
+	echo "$0: lock exists" | logger
+	exit 1
+}
+
+# lock is also checked for and deleted on boot, in case of a crash
+touch "${LOCK}"
+
+HOST_N="$(hostname -s)"
+"${HOME}/repos/weather_tools/grab_48h" "${HOME}/repos/co2_wx/data" co2.dat
+gnuplot "${HOME}/repos/co2_wx/co2.gnuplot"
+sync
+
+[[ "${HOST_N}" == "spiffy" ]] && {
+	/usr/bin/rsync -ur --timeout=55 /import/home/ghz/co2_wx/* wx4@darkdata.org:/wx4/
+}
+
+rm "${LOCK}"
