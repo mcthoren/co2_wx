@@ -15,6 +15,8 @@ set xrange [:] noextend
 set grid mxtics
 set xtics out
 set ytics out
+set y2tics
+set link y2
 
 dat_f="~/co2_wx/data/co2.day.avg"
 dat_f_30="~/co2_wx/data/co2.day.avg.30"
