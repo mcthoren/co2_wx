@@ -16,11 +16,25 @@ set format y "%.1f"
 
 dat_f="/import/home/ghz/repos/co2_wx/data/co2.dat.2-3_day"
 
+# plot nothing to set range, so y2 can use it later w.o. throwing an error.
+# this isn't necessary in gnuplot v5.2p6, but now in 5.4p1 it is? you would think
+# "set y2tics mirror" or similar would sort it, but i haven't managed to make anything work yet.
+set output "| cat > /dev/null"
+plot dat_f using 1:6
+
+set y2range [GPVAL_Y_MIN:GPVAL_Y_MAX]
+set y2tics
 set ylabel "CO_{2} (ppm)"
 set y2label "CO_{2} (ppm)"
 set output "/import/home/ghz/repos/co2_wx/plots/room_co2.png"
 plot dat_f using 1:6 title 'CO_{2}' with lines lw 2 linecolor rgb "#00dd00"
 
+unset y2tics
+set output "| cat > /dev/null"
+plot dat_f using 1:3
+
+set y2range [GPVAL_Y_MIN:GPVAL_Y_MAX]
+set y2tics
 set ylabel "Temp (°C)"
 set y2label "Temp (°C)"
 set output "/import/home/ghz/repos/co2_wx/plots/room_temp.png"
