@@ -16,15 +16,14 @@ set term pngcairo size 2000, 512 font ",10"
 set format y "%.1f"
 set format y2 "%.1f"
 
-HOME=system('echo "${HOME}"')
-dat_f=HOME."/repos/co2_wx/data/co2.dat.2-3_day"
+dat_f="~/repos/co2_wx/data/co2.dat.2-3_day"
 
 set ylabel "CO_{2} (ppm)"
 set y2label "CO_{2} (ppm)"
-set output HOME."/repos/co2_wx/plots/room_co2.png"
+set output "~/repos/co2_wx/plots/room_co2.png"
 plot dat_f using 1:6 title 'CO_{2}' with lines lw 2 linecolor rgb "#00dd00"
 
 set ylabel "Temp (°C)"
 set y2label "Temp (°C)"
-set output HOME."/repos/co2_wx/plots/room_temp.png"
+set output "~/repos/co2_wx/plots/room_temp.png"
 plot dat_f using 1:3 title 'Temp' with lines lw 2 linecolor rgb "#0000dd"
