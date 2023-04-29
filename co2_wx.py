@@ -132,8 +132,6 @@ if __name__ == "__main__":
 			co2 = co2_val / co2_count
 			dat_string = "%s\tT: %2.2f C\tCO2: %4i ppm\n" % (ts, temp, co2)
 			wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
-			# plot(ts, dat_fname)
 			gen_index(co2, temp, title)
-			#os.system('/usr/bin/rsync -ur --timeout=60 '+wx_dir+'/* '+wx_user+'@darkdata.org:/'+wx_user+'/')
 			co2_val = co2_count = t_val = t_count = 0
 			time0 = time1 = time.time()	
