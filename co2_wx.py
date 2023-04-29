@@ -3,37 +3,7 @@
 
 # This is a hacked up version of code from: https://hackaday.io/project/5301/logs
 
-import sys, fcntl, time, datetime, os, fileinput, argparse
-import numpy as np
-import matplotlib.dates as mdates
-
-def plot(ts, n_plate):
-	npoints = 2200 # ~48h
-
-	dat_f = ["0000", "0000", "0000", "0000"]
-
-	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
-
-	for i in range (0, 4):
-		d_date = (td - datetime.timedelta(i)).strftime("%Y%m%d")
-		d_year = (td - datetime.timedelta(i)).strftime("%Y")
-		dat_f[3 - i] = wx_dir+'/data/'+d_year+'/'+n_plate+'.'+d_date
-		wx.proof_dat_f(dat_f[3 - i])
-
-	co2_dat = fileinput.input(dat_f)
-	date, temp, co2 = np.loadtxt(co2_dat, usecols = (0, 2, 5), unpack = True, encoding = u'utf8', converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
-
-	if date.size < 4:
-		return 0; # not enough points yet. wait for more
-
-	if date.size < npoints:
-		npoints = date.size - 1
-
-	f_pts  = date.size - npoints
-	t_pts  = date.size
-
-	wx.graph(date[f_pts : t_pts], temp[f_pts : t_pts], "b-", u"Temperature", u"Temp (°C)", plot_d+'room_temp.png')
-	wx.graph(date[f_pts : t_pts], co2[f_pts : t_pts], "g-", u"CO₂ Levels", u"CO₂ (ppm)", plot_d+'room_co2.png')
+import sys, fcntl, time, argparse
 
 def decrypt(data):
 	cstate = [0x48,  0x74,  0x65,  0x6D,  0x70,  0x39,  0x39,  0x65]
