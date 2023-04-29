@@ -23,4 +23,8 @@ sync
 	/usr/bin/rsync -ur --timeout=55 /import/home/ghz/co2_wx/* wx4@darkdata.org:/wx4/
 }
 
+[[ "${HOST_N}" == "elf" ]] && {
+	/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@darkdata.org:/wx2/
+}
+
 rm "${LOCK}"
