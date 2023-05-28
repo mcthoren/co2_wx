@@ -1,7 +1,7 @@
 #!/bin/sh
 
 WT_DIR='/import/home/ghz/repos/weather_tools'
-DAT_DIR='/home/ghz//co2/data'
+DAT_DIR='/home/ghz/co2/data'
 
 "${WT_DIR}/grab_n_hours" -n 48 -d "${DAT_DIR}" -f co2.dat
 gnuplot /import/home/ghz/repos/co2_wx/mh-z14.gnuplot
