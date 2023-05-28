@@ -1,4 +1,5 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 # the plan here is to collect and write out data from
 # what i think is a Winsen MH-Z14A NDIR CO₂ Module.
@@ -11,12 +12,12 @@
 
 import serial, struct, sys, time
 
-sys.path.append('/home/ghz/repos/wxlib')
+sys.path.append('/import/home/ghz/repos/wxlib')
 import wxlib as wx
 
-wx_dir = "/tmp/co2"
+wx_dir = "/home/ghz/co2"
 
-port='/dev/ttyU0'
+port='/dev/ttyUSB0'
 read_co2_c = [0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79]
 
 # 0 - 2000 ppm
