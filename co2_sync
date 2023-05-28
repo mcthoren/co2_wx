@@ -17,7 +17,6 @@ touch "${LOCK}"
 HOST_N="$(hostname -s)"
 "${HOME}/repos/weather_tools/grab_48h" "${HOME}/repos/co2_wx/data" co2.dat
 gnuplot "${HOME}/repos/co2_wx/co2.gnuplot"
-/import/home/ghz/repos/co2_wx/mh_wrap
 sync
 
 [[ "${HOST_N}" == "spiffy" ]] && {
