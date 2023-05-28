@@ -3,6 +3,8 @@ https://hackaday.io/project/5301/logs
 
 It's meant to graph the data from a TFA Dostmann USB CO2/Temperature monitor.
 
+Code to grab and graph data from a Winsen MH-Z14A NDIR CO₂ Module as also been added.
+
 To Install:
 	+ git clone https://github.com/mcthoren/co2_wx.git
 	+ git clone https://github.com/mcthoren/wxlib.git
@@ -17,7 +19,3 @@ This code can be found in the following places:
 + https://wx2.slackology.net/plots/co2_wx.html	<--page
 + https://wx2.slackology.net/			<--code, page, plots, data
 + https://github.com/mcthoren/co2_wx		<--code
-
-TODO:
- + maybe just pass time objects instead of doing the timestamp conversions dance in the plot func
- + using a fixed number of points leads to wide differences in the amount of data graphed, even between insturments of the same make and model.
