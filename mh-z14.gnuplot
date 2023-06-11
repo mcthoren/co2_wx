@@ -16,9 +16,9 @@ set term pngcairo size 2000, 512 font ",10"
 set format y "%.1f"
 set format y2 "%.1f"
 
-dat_f="/home/ghz/co2/data/co2.dat.48_hours"
+dat_f="/import/home/ghz/repos/co2_wx/data/co2.dat.48_hours"
 
 set ylabel "CO_{2} (ppm)"
 set y2label "CO_{2} (ppm)"
-set output "~/repos/co2_wx/plots/mhz14_co2.png"
+set output "~/repos/co2_wx/plots/room_co2.png"
 plot dat_f using 1:3 title 'CO_{2}' with lines lw 2 linecolor rgb "#00dddd"

@@ -15,15 +15,18 @@ LOCK="${HOME}/repos/co2_wx/plots/co2.lock"
 touch "${LOCK}"
 
 HOST_N="$(hostname -s)"
-"${HOME}/repos/weather_tools/grab_48h" "${HOME}/repos/co2_wx/data" co2.dat
-gnuplot "${HOME}/repos/co2_wx/co2.gnuplot"
-sync
 
 [[ "${HOST_N}" == "spiffy" ]] && {
+	"${HOME}/repos/weather_tools/grab_n_hours" -n 48 -d  "${HOME}/repos/co2_wx/data" -f co2.dat
+	gnuplot /import/home/ghz/repos/co2_wx/mh-z14.gnuplot
+	sync
 	/usr/bin/rsync -ur --timeout=55 /import/home/ghz/co2_wx/* wx4@darkdata.org:/wx4/
 }
 
 [[ "${HOST_N}" == "elf" ]] && {
+	"${HOME}/repos/weather_tools/grab_48h" "${HOME}/repos/co2_wx/data" co2.dat
+	gnuplot "${HOME}/repos/co2_wx/co2.gnuplot"
+	sync
 	/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@darkdata.org:/wx2/
 }
 

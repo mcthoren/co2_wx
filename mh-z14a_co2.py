@@ -15,7 +15,7 @@ import serial, struct, sys, time
 sys.path.append('/import/home/ghz/repos/wxlib')
 import wxlib as wx
 
-wx_dir = "/home/ghz/co2"
+wx_dir = "/import/home/ghz/co2_wx"
 
 port='/dev/ttyUSB0'
 read_co2_c = [0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79]
