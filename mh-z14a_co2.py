@@ -51,6 +51,8 @@ if __name__ == '__main__':
 	while True:
 		port_dev.write(bytearray(read_co2_c))
 		read_bytes = port_dev.read(9)
+		if debug:
+			print("len(read_bytes): ", len(read_bytes), "\n")
 		if len(read_bytes) == 9:
 			# big endian: start byte, cmd, high byte, low byte, -, -, -, -, checksum
 			vals = struct.unpack(">cchccccc", read_bytes)
