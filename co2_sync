@@ -27,7 +27,7 @@ HOST_N="$(hostname -s)"
 	"${HOME}/repos/weather_tools/grab_48h" "${HOME}/repos/co2_wx/data" co2.dat
 	gnuplot "${HOME}/repos/co2_wx/co2.gnuplot"
 	sync
-	/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@darkdata.org:/wx2/
+	/usr/bin/rsync -ur --timeout=60 /home/ghz/co2_wx/* wx2@darkdata.org:/wx2/ 2> /dev/null
 }
 
 rm "${LOCK}"
