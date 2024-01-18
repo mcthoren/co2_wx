@@ -71,6 +71,9 @@ if __name__ == '__main__':
 				port_dev = serial.Serial(port, 9600, timeout = 1)
 				init_port(port_dev)
 				continue
+		if len(read_bytes) != 9:
+			init_port(port_dev)
+			continue
 
 		if itr >= 58:
 			ts = time.strftime("%FT%TZ", time.gmtime())
