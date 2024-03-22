@@ -32,35 +32,56 @@ detect_range_c = [0xff, 0x01, 0x99, 0x00, 0x00, 0x00, 0x13, 0x88, 0xcb]
 # 20min @ 400ppm
 zero_point_cal_c = [0xff, 0x01, 0x87, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78]
 
+port_dev = serial.Serial(port, 9600, timeout = 1)
+
 debug = 1
 def init_port(p_dev):
-	p_dev.flushInput()
-	p_dev.flushOutput()
-	p_dev.write(bytearray(detect_range_c))
+
 	if debug:
 		print("Attempting to (re)start serial port.\n")
+
+	p_dev.flushInput()
+	p_dev.flushOutput()
+
+	if p_dev.isOpen():
+		p_dev.close()
+		p_dev.open()
+
+	p_dev.write(bytearray(detect_range_c))
 
 if __name__ == '__main__':
 	dat_fname = 'co2.dat'
 
-	port_dev = serial.Serial(port, 9600, timeout = 1)
 	init_port(port_dev)
 	
 	itr = 0
 	co2_ppm = 0.0
+	start_delay_counter = 0
+
 	while True:
 		port_dev.write(bytearray(read_co2_c))
 		read_bytes = port_dev.read(9)
-		if debug:
-			print("len(read_bytes): ", len(read_bytes), "\n")
+
+		if start_delay_counter < 9:
+			if debug:
+				print("start delay")
+			start_delay_counter += 1
+
+			time.sleep(1)
+			continue
+
+		if debug > 1:
+			print("len(read_bytes): ", len(read_bytes))
+
 		if len(read_bytes) == 9:
 			# big endian: start byte, cmd, high byte, low byte, -, -, -, -, checksum
 			vals = struct.unpack(">cchccccc", read_bytes)
 			co2_ppm += vals[2]
 			itr += 1
-			if debug:
+
+			if debug > 1:
 				tsd = time.strftime("%FT%TZ", time.gmtime())
-				print(tsd, "\t", "CO₂:", vals[2], "ppm")
+				print(tsd, "\t", "CO₂:", vals[2], "ppm", "\n")
 
 			if read_bytes[8] != 0xff & (~ sum(read_bytes[1:8]) + 1):
 				print("checksum failed!")
@@ -71,7 +92,12 @@ if __name__ == '__main__':
 				port_dev = serial.Serial(port, 9600, timeout = 1)
 				init_port(port_dev)
 				continue
+
 		if len(read_bytes) != 9:
+
+			if debug:
+				print("len(read_bytes): ", len(read_bytes), " != 9")
+
 			init_port(port_dev)
 			continue
 
