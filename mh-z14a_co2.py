@@ -40,11 +40,21 @@ def init_port(p_dev):
 	if debug:
 		print("Attempting to (re)start serial port.\n")
 
-	p_dev.flushInput()
-	p_dev.flushOutput()
-
 	if p_dev.isOpen():
+		try:
+			p_dev.flushInput()
+		except:
+			time.sleep(0.1) # doesn't actually matter that much
+
+		try:
+			p_dev.flushOutput()
+		except:
+			time.sleep(0.1) # not that critical
+
 		p_dev.close()
+		p_dev.open()
+
+	if not p_dev.isOpen():
 		p_dev.open()
 
 	p_dev.write(bytearray(detect_range_c))
@@ -88,8 +98,6 @@ if __name__ == '__main__':
 				print("check sum: ", read_bytes[8])
 				print("calc sum: ", 0xff & (~ sum(read_bytes[1:8]) + 1), "\n")
 				time.sleep(1)
-				port_dev.close()
-				port_dev = serial.Serial(port, 9600, timeout = 1)
 				init_port(port_dev)
 				continue
 
