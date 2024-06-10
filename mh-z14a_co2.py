@@ -69,8 +69,25 @@ if __name__ == '__main__':
 	start_delay_counter = 0
 
 	while True:
-		port_dev.write(bytearray(read_co2_c))
-		read_bytes = port_dev.read(9)
+		try:
+			port_dev.write(bytearray(read_co2_c))
+		except:
+			if debug:
+				print("Attempting port re-init after failed read_co2_c write.")
+			time.sleep(1)
+			init_port(port_dev)
+			time.sleep(1)
+			continue
+
+		try:
+			read_bytes = port_dev.read(9)
+		except:
+			if debug:
+				print("Attempting port re-init after failing to read 9 bytes.")
+			time.sleep(1)
+			init_port(port_dev)
+			time.sleep(1)
+			continue
 
 		if start_delay_counter < 9:
 			if debug:
