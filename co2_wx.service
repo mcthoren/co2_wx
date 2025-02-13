@@ -1,0 +1,13 @@
+[Unit]
+Description=Measure CO₂ levels.
+After=network.target systemd-timesyncd.service systemd-udevd.service systemd-udev-settle.service
+Requires=systemd-udevd.service systemd-udev-settle.service
+
+[Service]
+User=ghz
+WorkingDirectory=/home/ghz/repos/co2_wx/
+ExecStartPre/home/ghz/repos/co2_wx/clean_locks
+ExecStart=/home/ghz/repos/co2_wx/co2_wx.py --outdoor
+
+[Install]
+WantedBy=multi-user.target
